@@ -1,0 +1,43 @@
+<form class="filter" (ngSubmit)="onSubmit()">
+  <select name="filter" id="filter" [(ngModel)]="selectedFilter" (change)="clearAll()">
+    <option value="0">None</option>
+    <option value="1">Name</option>
+    <option value="2">Username</option>
+    <option value="3">Weapon</option>
+    <option value="4">Tag</option>
+  </select>
+
+  <input name="name" type="text" *ngIf="selectedFilter == 1" [(ngModel)]="name">
+  <input name="username" type="text" *ngIf="selectedFilter == 2" [(ngModel)]="username">
+
+  <select name="weapons" id="weapons" *ngIf="selectedFilter == 3" [(ngModel)]="weapon">
+    <option value="0" selected disabled>-- Select a weapon --</option>
+    <option *ngFor="let weapon of weapons" [value]="weapon">{{ weapon }}</option>
+  </select>
+
+  <select name="tags" id="tags" *ngIf="selectedFilter == 4" [(ngModel)]="tag">
+    <option value="0" selected disabled>-- Select a tag --</option>
+    <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
+  </select>
+
+  <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Tag</th>
+      <th scope="col">Weapons</th>
+      <th scope="col">Author</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let build of (builds$ | async)" (click)="detail(build.name)">
+      <td>{{ build.name }}</td>
+      <td>{{ build.tag }}</td>
+      <td>{{ build.primaryWeaponName }} / {{ build.secondaryWeaponName }}</td>
+      <td>{{ build.username }}</td>
+    </tr>
+  </tbody>
+</table>

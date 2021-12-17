@@ -1,0 +1,37 @@
+<form (ngSubmit)="onSubmit()">
+  <select name="primaryWeapon" id="primaryWeapon" [(ngModel)]="primaryWeapon" (change)="getPrimaryAbilities()">
+    <option value="0">-- Select a weapon --</option>
+    <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
+  </select>
+
+  <!-- abilities weapon 1 -->
+  <div>
+    <div>
+
+    </div>
+  </div>
+
+  <select name="secondaryWeapon" id="secondaryWeapon" [(ngModel)]="secondaryWeapon" (change)="getSecondaryAbilities()">
+    <option value="0">-- Select a weapon --</option>
+    <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
+  </select>
+  <!-- abilities weapon 2 -->
+
+  <input type="text" name="name" [(ngModel)]="name">
+
+  <input type="text" name="username" [(ngModel)]="username">
+
+  <select name="tags" id="tags" [(ngModel)]="tag">
+    <option value="0" selected disabled>-- Select a tag --</option>
+    <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
+  </select>
+
+  <input type="range" min="0" max="300" name="strength" id="strength" [(ngModel)]="strength">
+  <input type="range" min="0" max="300" name="dexterity" id="dexterity" [(ngModel)]="dexterity">
+  <input type="range" min="0" max="300" name="intelligence" id="intelligence" [(ngModel)]="intelligence">
+  <input type="range" min="0" max="300" name="focus" id="focus" [(ngModel)]="focus">
+  <input type="range" min="0" max="300" name="constitution" id="constitution" [(ngModel)]="constitution">
+
+  <button type="submit">Submit</button>
+
+</form>

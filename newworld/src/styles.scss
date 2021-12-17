@@ -1,0 +1,9 @@
+//override Bootstrap variables and custom mixins
+@import "variables";
+
+//reboot
+@import "reboot";
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+//custom code/partials

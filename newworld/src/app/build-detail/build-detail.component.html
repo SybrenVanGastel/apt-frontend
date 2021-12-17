@@ -1,0 +1,64 @@
+<h1>{{ build.name }}</h1>
+<p>{{ build.tag }}</p>
+<div>
+  <p>Strength</p>
+  <p>{{ build.attributes.strength }}</p>
+  <input type="range" min="0" max="300" [(ngModel)]="build.attributes.strength">
+
+  <p>Dexterity</p>
+  <p>{{ build.attributes.dexterity }}</p>
+  <input type="range" min="0" max="300" [(ngModel)]="build.attributes.dexterity">
+
+  <p>Intelligence</p>
+  <p>{{ build.attributes.intelligence }}</p>
+  <input type="range" min="0" max="300" [(ngModel)]="build.attributes.intelligence">
+
+  <p>Focus</p>
+  <p>{{ build.attributes.focus }}</p>
+  <input type="range" min="0" max="300" [(ngModel)]="build.attributes.focus">
+
+  <p>Constitution</p>
+  <p>{{ build.attributes.constitution }}</p>
+  <input type="range" min="0" max="300" [(ngModel)]="build.attributes.constitution">
+</div>
+
+<div>
+  <h1>{{ build.primaryWeapon.name }}</h1>
+  <p>{{ build.primaryWeapon.description }}</p>
+  <img [src]="build.primaryWeapon.imageUrl" [alt]="build.primaryWeapon.name">
+  <h2>{{ categoryPWName1 }}</h2>
+  <div *ngFor="let ability of categoryPWAbilities1">
+    <label [for]="ability.id">
+      <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id" [(ngModel)]="ability.isSelected">
+      <span>{{ ability.name }}</span>
+    </label>
+  </div>
+  <h2>{{ categoryPWName2 }}</h2>
+  <div *ngFor="let ability of categoryPWAbilities2">
+    <label [for]="ability.id">
+      <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id" [(ngModel)]="ability.isSelected">
+      <span>{{ ability.name }}</span>
+    </label>
+  </div>
+</div>
+
+<div>
+  <h1>{{ build.secondaryWeapon.name }}</h1>
+  <p>{{ build.secondaryWeapon.description }}</p>
+  <img [src]="build.secondaryWeapon.imageUrl" [alt]="build.secondaryWeapon.name">
+  <h2>{{ categorySWName1 }}</h2>
+  <div *ngFor="let ability of categorySWAbilities1">
+    <label [for]="ability.id">
+      <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id" [(ngModel)]="ability.isSelected">
+      <span>{{ ability.name }}</span>
+    </label>
+  </div>
+  <h2>{{ categorySWName2 }}</h2>
+  <div *ngFor="let ability of categorySWAbilities2">
+    <label [for]="ability.id">
+      <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id" [(ngModel)]="ability.isSelected">
+      <span>{{ ability.name }}</span>
+    </label>
+  </div>
+</div>
+
