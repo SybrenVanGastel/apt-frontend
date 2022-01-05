@@ -1,5 +1,6 @@
-<form class="filter" (ngSubmit)="onSubmit()">
-  <select name="filter" id="filter" [(ngModel)]="selectedFilter" (change)="clearAll()">
+<form class="filter py-5" (ngSubmit)="onSubmit()">
+  <label for="filter" class="w-100 text-white font-weight-bold">Filter on: </label>
+  <select name="filter" id="filter" class="mr-2" [(ngModel)]="selectedFilter" (change)="clearAll()">
     <option value="0">None</option>
     <option value="1">Name</option>
     <option value="2">Username</option>
@@ -7,25 +8,23 @@
     <option value="4">Tag</option>
   </select>
 
-  <input name="name" type="text" *ngIf="selectedFilter == 1" [(ngModel)]="name">
-  <input name="username" type="text" *ngIf="selectedFilter == 2" [(ngModel)]="username">
+  <input name="name" type="text" class="mr-2" *ngIf="selectedFilter == 1" [(ngModel)]="name">
+  <input name="username" type="text" class="mr-2" *ngIf="selectedFilter == 2" [(ngModel)]="username">
 
-  <select name="weapons" id="weapons" *ngIf="selectedFilter == 3" [(ngModel)]="weapon">
-    <option value="0" selected disabled>-- Select a weapon --</option>
+  <select name="weapons" id="weapons" class="mr-2" *ngIf="selectedFilter == 3" [(ngModel)]="weapon">
+    <option value="" selected disabled>-- Select a weapon --</option>
     <option *ngFor="let weapon of weapons" [value]="weapon">{{ weapon }}</option>
   </select>
 
-  <select name="tags" id="tags" *ngIf="selectedFilter == 4" [(ngModel)]="tag">
-    <option value="0" selected disabled>-- Select a tag --</option>
+  <select name="tags" id="tags" class="mr-2" *ngIf="selectedFilter == 4" [(ngModel)]="tag">
+    <option value="" selected disabled>-- Select a tag --</option>
     <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
   </select>
 
-  <button class="btn btn-primary" type="submit">Search</button>
+  <button class="btn btn-primary btn-corr" type="submit">Search</button>
 </form>
 
-<button class="btn btn-primary" type="submit" (click)='add()'>Add</button>
-
-<table class="table table-dark">
+<table class="table">
   <thead>
     <tr>
       <th scope="col">Name</th>
@@ -41,10 +40,10 @@
       <td>{{ build.tag }}</td>
       <td>{{ build.primaryWeaponName }} / {{ build.secondaryWeaponName }}</td>
       <td>{{ build.username }}</td>
-      <td>
-        <i class="fas fa-eye" (click)="detail(build.name)"></i>
-        <i class="fas fa-pen" (click)='edit(build.name)'></i>
-        <i class="fas fa-trash" (click)='delete(build.name)'></i>
+      <td style="width: 150px !important;">
+          <button class="btn-sm btn-primary border-0 mr-2" (click)="detail(build.name)"><i class="fas fa-eye"></i></button>
+          <button class="btn-sm btn-success border-0 mr-2" (click)='edit(build.name)'><i class="fas fa-pen"></i></button>
+          <button class="btn-sm btn-danger border-0 mr-2" (click)='delete(build.name)'><i class="fas fa-trash"></i></button>
       </td>
     </tr>
   </tbody>

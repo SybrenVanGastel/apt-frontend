@@ -1,0 +1,16 @@
+.btn-corr {
+  transform: translateY(-1.5px);
+}
+
+table {
+  background-color: #0c0c0e;
+  color: white;
+
+  th {
+    background-color: lighten(#0c0c0e, 10);
+  }
+
+  th, td {
+    border: 1px solid #363636;
+  }
+}

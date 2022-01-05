@@ -62,11 +62,6 @@ export class BuildOverviewComponent implements OnInit {
     this.router.navigateByUrl("build/" + name);
   }
 
-  add() {
-    //Navigate to form in add mode
-    this.router.navigate(['builds/form'], {state: {mode: 'add'}});
-  }
-
   edit(name: string) {
     //Navigate to form in edit mode
     this.router.navigate(['builds/form'], {state: {mode: 'edit', name: name}});

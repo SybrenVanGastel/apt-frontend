@@ -7,3 +7,37 @@
 @import "node_modules/bootstrap/scss/bootstrap";
 
 //custom code/partials
+body, html {
+  background-color: #151a21;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+}
+
+.bg-black {
+  background-color: #000000;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+.btn {
+  padding: 0.5rem 1rem !important;
+  border: 2px solid transparent;
+}
+
+select, input, .btn {
+  height: 44px;
+}
+
+select, input {
+  border: 2px solid #363636;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #96c7f8;
+}
+
+option {
+  color: #000;
+}
