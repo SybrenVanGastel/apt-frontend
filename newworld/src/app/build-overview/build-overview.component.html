@@ -23,6 +23,8 @@
   <button class="btn btn-primary" type="submit">Search</button>
 </form>
 
+<button class="btn btn-primary" type="submit" (click)='add()'>Add</button>
+
 <table class="table table-dark">
   <thead>
     <tr>
@@ -30,6 +32,7 @@
       <th scope="col">Tag</th>
       <th scope="col">Weapons</th>
       <th scope="col">Author</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -38,6 +41,10 @@
       <td>{{ build.tag }}</td>
       <td>{{ build.primaryWeaponName }} / {{ build.secondaryWeaponName }}</td>
       <td>{{ build.username }}</td>
+      <td>
+        <i class="fas fa-pen" (click)='edit(build.name)'></i>
+        <i class="fas fa-trash" (click)='delete(build.name)'></i>
+      </td>
     </tr>
   </tbody>
 </table>

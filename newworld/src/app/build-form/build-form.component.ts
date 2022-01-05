@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Ability } from '../ability';
-import { Attributes } from '../attributes';
 import { Build } from '../build';
 import { BuildForm } from '../build-form';
 import { BuildOverviewService } from '../build-overview.service';
@@ -45,6 +44,8 @@ export class BuildFormComponent implements OnInit {
   categorySWName2: string = "";
   categorySWAbilities1: Ability[] = [];
   categorySWAbilities2: Ability[] = [];
+  selectedAbilities1: number[] = [];
+  selectedAbilities2: number[] = [];
 
   weapons$ : Observable<Weapon[]> = new Observable();
 
@@ -60,7 +61,7 @@ export class BuildFormComponent implements OnInit {
     this.isEdit = this.router.getCurrentNavigation()?.extras.state?.mode === 'edit';
     this.name = this.router.getCurrentNavigation()?.extras.state?.name;
 
-    if(this.name != "") {
+    if(this.name != null) {
       this.build$ = this.buildOverviewService.getBuildByNameForm(this.name).subscribe(result => {
         this.build = result;
 
@@ -72,19 +73,53 @@ export class BuildFormComponent implements OnInit {
     this.weapons$ = this.weaponService.getWeapons();
   }
 
-  getPrimaryAbilities() {
+  selectAbilitiesPW(event: any, id: number) {
+    if(this.selectedAbilities1.length == 3) {
+      this.errorMessage = "You already selected 3 abilities for your primary weapon.";
+      let checkbox = event.target;
+      console.log(checkbox);
+
+      if(checkbox.get)
+      checkbox.click();
+    }
+
+    if(this.selectedAbilities1.length < 3) {
+      this.selectedAbilities1.push(id);
+    }
+
+    console.log(this.selectedAbilities1);
+    console.log(this.errorMessage);
+  }
+
+  onChangePrimaryWeapon() {
     this.weaponService.getWeaponByName(this.primaryWeapon).subscribe(result => {
-      let weapon: Weapon = result;
-      this.primaryAbilities = weapon.abilities;
+      this.primaryWeaponObject = result;
+      this.seperateCategories();
     });
   }
 
-  getSecondaryAbilities() {
+  onChangeSecondaryWeapon() {
     this.weaponService.getWeaponByName(this.secondaryWeapon).subscribe(result => {
-      let weapon: Weapon = result;
-      this.secondaryAbilities = weapon.abilities;
+      this.secondaryWeaponObject = result;
+      this.seperateCategories();
     });
   }
+
+  // getPrimaryAbilities() {
+  //   this.weaponService.getWeaponByName(this.primaryWeapon).subscribe(result => {
+  //     let weapon: Weapon = result;
+  //     this.primaryAbilities = weapon.abilities;
+  //   });
+  //   this.seperateCategories();
+  // }
+
+  // getSecondaryAbilities() {
+  //   this.weaponService.getWeaponByName(this.secondaryWeapon).subscribe(result => {
+  //     let weapon: Weapon = result;
+  //     this.secondaryAbilities = weapon.abilities;
+  //   });
+  //   this.seperateCategories();
+  // }
 
   ngOnDestroy() {
     this.build$.unsubscribe();
@@ -122,6 +157,15 @@ export class BuildFormComponent implements OnInit {
   }
 
   seperateCategories() {
+    this.categoryPWName1 = "";
+    this.categoryPWName2 = "";
+    this.categorySWName1 = "";
+    this.categorySWName2 = "";
+    this.categoryPWAbilities1 = [];
+    this.categoryPWAbilities2 = [];
+    this.categorySWAbilities1 = [];
+    this.categorySWAbilities2 = [];
+
     for(let ability of this.primaryWeaponObject.abilities) {
       if (this.categoryPWName1 == "") {
         this.categoryPWName1 = ability.category;

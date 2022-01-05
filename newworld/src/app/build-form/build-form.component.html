@@ -1,36 +1,77 @@
 <form (ngSubmit)="onSubmit()">
-  <select name="primaryWeapon" id="primaryWeapon" [(ngModel)]="primaryWeapon" (change)="getPrimaryAbilities()">
-    <option value="0">-- Select a weapon --</option>
+  <label for="primaryWeapon">Select primary weapon</label>
+  <select name="primaryWeapon" id="primaryWeapon" [(ngModel)]="primaryWeapon" (change)="onChangePrimaryWeapon()">
     <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
   </select>
+  <br/>
 
   <!-- abilities weapon 1 -->
   <div>
-    <div>
-
+    <p>{{ categoryPWName1 }}</p>
+    <div *ngFor="let ability of categoryPWAbilities1">
+      <input type="checkbox" [value]="ability.id" [id]="ability.name" (change)="selectAbilitiesPW($event, ability.id)"/>
+      <label [for]="ability.name">{{ ability.name }}</label>
+    </div>
+    <p>{{ categoryPWName2 }}</p>
+    <div *ngFor="let ability of categoryPWAbilities2">
+      <input type="checkbox" [value]="ability.id" [id]="ability.name" (change)="selectAbilitiesPW($event, ability.id)" />
+      <label [for]="ability.name">{{ ability.name }}</label>
     </div>
   </div>
 
-  <select name="secondaryWeapon" id="secondaryWeapon" [(ngModel)]="secondaryWeapon" (change)="getSecondaryAbilities()">
-    <option value="0">-- Select a weapon --</option>
+  <label for="secondaryWeapon">Select secondary weapon</label>
+  <select name="secondaryWeapon" id="secondaryWeapon" [(ngModel)]="secondaryWeapon" (change)="onChangeSecondaryWeapon()">
     <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
   </select>
+  <br/>
+
   <!-- abilities weapon 2 -->
+  <div>
+    <p>{{ categorySWName1 }}</p>
+    <div *ngFor="let ability of categorySWAbilities1">
+      <input type="checkbox" [value]="ability.id" [id]="ability.name" />
+      <label [for]="ability.name">{{ ability.name }}</label>
+    </div>
+    <p>{{ categorySWName2 }}</p>
+    <div *ngFor="let ability of categorySWAbilities2">
+      <input type="checkbox" [value]="ability.id" [id]="ability.name" />
+      <label [for]="ability.name">{{ ability.name }}</label>
+    </div>
+  </div>
 
+  <label for="name">Enter a build name</label>
   <input type="text" name="name" [(ngModel)]="name">
+  <br/>
 
+  <label for="username">Enter your username</label>
   <input type="text" name="username" [(ngModel)]="username">
+  <br/>
 
+  <label for="tags">Select a tag</label>
   <select name="tags" id="tags" [(ngModel)]="tag">
-    <option value="0" selected disabled>-- Select a tag --</option>
     <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
   </select>
+  <br/>
 
-  <input type="range" min="0" max="300" name="strength" id="strength" [(ngModel)]="strength">
-  <input type="range" min="0" max="300" name="dexterity" id="dexterity" [(ngModel)]="dexterity">
-  <input type="range" min="0" max="300" name="intelligence" id="intelligence" [(ngModel)]="intelligence">
-  <input type="range" min="0" max="300" name="focus" id="focus" [(ngModel)]="focus">
-  <input type="range" min="0" max="300" name="constitution" id="constitution" [(ngModel)]="constitution">
+  <label for="strength">Strength</label>
+  <input type="range" min="5" max="300" name="strength" id="strength" [(ngModel)]="strength">
+  <br/>
+
+  <label for="dexterity">Dexterity</label>
+  <input type="range" min="5" max="300" name="dexterity" id="dexterity" [(ngModel)]="dexterity">
+  <br/>
+
+  <label for="intelligence">Intelligence</label>
+  <input type="range" min="5" max="300" name="intelligence" id="intelligence" [(ngModel)]="intelligence">
+  <br/>
+
+  <label for="focus">Focus</label>
+  <input type="range" min="5" max="300" name="focus" id="focus" [(ngModel)]="focus">
+  <br/>
+
+  <label for="constitution">Constitution</label>
+  <input type="range" min="5" max="300" name="constitution" id="constitution" [(ngModel)]="constitution">
+  <br/>
 
   <button type="submit">Submit</button>
 
