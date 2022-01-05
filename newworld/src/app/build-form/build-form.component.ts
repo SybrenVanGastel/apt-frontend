@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Ability } from '../ability';
 import { Build } from '../build';
+import { BuildDetail } from '../build-detail';
 import { BuildForm } from '../build-form';
 import { BuildOverviewService } from '../build-overview.service';
 import { Weapon } from '../weapon';
@@ -21,16 +22,7 @@ export class BuildFormComponent implements OnInit {
   errorMessage: string = "";
 
   tags: string[]= ["PVE","PVP","GENERAL","WAR"];
-  primaryWeapon: string = "";
-  secondaryWeapon: string = "";
   name: string = "";
-  username: string = "";
-  tag: string = "";
-  strength: number = 0;
-  dexterity: number = 0;
-  intelligence: number = 0;
-  focus: number = 0;
-  constitution: number = 0;
   primaryAbilities: Ability[] = [];
   secondaryAbilities: Ability[] = [];
 
@@ -47,10 +39,12 @@ export class BuildFormComponent implements OnInit {
   selectedAbilities1: number[] = [];
   selectedAbilities2: number[] = [];
 
+  attributePointsTotal: number = 0;
+
   weapons$ : Observable<Weapon[]> = new Observable();
 
-  build: Build = {id: "", name:"", username:"", tag:"", primaryWeaponName: "", secondaryWeaponName: ""};
-  buildForm: BuildForm = {name:"", username:"", tag:"", primaryWeaponName: "", secondaryWeaponName: "", selectedAbilitiesWeapon1: [], selectedAbilitiesWeapon2: [], attributes: []};
+  build: BuildDetail = {name:"", username:"", tag:"",attributes: {strength: 5, dexterity:5,intelligence:5,focus:5,constitution:5}, primaryWeapon: {id:0,name:"",description:"",imageUrl:"",abilities: []}, secondaryWeapon: {id:0,name:"",description:"",imageUrl:"",abilities: []}};
+  buildForm: BuildForm = {name:"", username:"", tag:"", primaryWeaponName: "", secondaryWeaponName: "", selectedAbilitiesWeapon1: [], selectedAbilitiesWeapon2: [], attributeOptions: []};
 
   build$: Subscription = new Subscription;
   postBuild$: Subscription = new Subscription;
@@ -62,9 +56,12 @@ export class BuildFormComponent implements OnInit {
     this.name = this.router.getCurrentNavigation()?.extras.state?.name;
 
     if(this.name != null) {
-      this.build$ = this.buildOverviewService.getBuildByNameForm(this.name).subscribe(result => {
+      this.build$ = this.buildOverviewService.getBuildByName(this.name).subscribe(result => {
         this.build = result;
 
+        this.primaryWeaponObject = this.build.primaryWeapon;
+        this.secondaryWeaponObject = this.build.secondaryWeapon;
+        this.seperateCategories();
       });
     }
   }
@@ -74,52 +71,87 @@ export class BuildFormComponent implements OnInit {
   }
 
   selectAbilitiesPW(event: any, id: number) {
+    let checkbox = event.target;
+    if(!checkbox.checked) {
+      var index = this.selectedAbilities1.indexOf(id);
+      if (index !== -1) {
+        this.selectedAbilities1.splice(index, 1);
+      }
+    }
+
     if(this.selectedAbilities1.length == 3) {
       this.errorMessage = "You already selected 3 abilities for your primary weapon.";
-      let checkbox = event.target;
-      console.log(checkbox);
 
-      if(checkbox.get)
-      checkbox.click();
+      if(checkbox.checked) {
+        checkbox.checked = false;
+      }
     }
 
-    if(this.selectedAbilities1.length < 3) {
+    if(this.selectedAbilities1.length < 3 && checkbox.checked) {
       this.selectedAbilities1.push(id);
     }
+  }
 
-    console.log(this.selectedAbilities1);
-    console.log(this.errorMessage);
+  selectAbilitiesSW(event: any, id: number) {
+    let checkbox = event.target;
+    if(!checkbox.checked) {
+      var index = this.selectedAbilities2.indexOf(id);
+      if (index !== -1) {
+        this.selectedAbilities2.splice(index, 1);
+      }
+    }
+
+    if(this.selectedAbilities2.length == 3) {
+      this.errorMessage = "You already selected 3 abilities for your primary weapon.";
+
+      if(checkbox.checked) {
+        checkbox.checked = false;
+      }
+    }
+
+    if(this.selectedAbilities2.length < 3 && checkbox.checked) {
+      this.selectedAbilities2.push(id);
+    }
   }
 
   onChangePrimaryWeapon() {
-    this.weaponService.getWeaponByName(this.primaryWeapon).subscribe(result => {
+    this.weaponService.getWeaponByName(this.build.primaryWeapon.name).subscribe(result => {
       this.primaryWeaponObject = result;
       this.seperateCategories();
     });
   }
 
   onChangeSecondaryWeapon() {
-    this.weaponService.getWeaponByName(this.secondaryWeapon).subscribe(result => {
+    this.weaponService.getWeaponByName(this.build.secondaryWeapon.name).subscribe(result => {
       this.secondaryWeaponObject = result;
       this.seperateCategories();
     });
   }
 
-  // getPrimaryAbilities() {
-  //   this.weaponService.getWeaponByName(this.primaryWeapon).subscribe(result => {
-  //     let weapon: Weapon = result;
-  //     this.primaryAbilities = weapon.abilities;
-  //   });
-  //   this.seperateCategories();
-  // }
+  attributeSlider(type: string) {
+    this.attributePointsTotal = this.build.attributes.strength + this.build.attributes.dexterity + this.build.attributes.intelligence + this.build.attributes.focus + this.build.attributes.constitution;
 
-  // getSecondaryAbilities() {
-  //   this.weaponService.getWeaponByName(this.secondaryWeapon).subscribe(result => {
-  //     let weapon: Weapon = result;
-  //     this.secondaryAbilities = weapon.abilities;
-  //   });
-  //   this.seperateCategories();
-  // }
+    if(!(this.attributePointsTotal < 215)) {
+      this.errorMessage = "You can only spend 190 attribute points.";
+      switch(type) {
+        case 'strength':
+          this.build.attributes.strength = 215 - this.build.attributes.dexterity - this.build.attributes.intelligence - this.build.attributes.focus - this.build.attributes.constitution;
+          break;
+        case 'dexterity':
+          this.build.attributes.dexterity = 215 - this.build.attributes.strength - this.build.attributes.intelligence - this.build.attributes.focus - this.build.attributes.constitution;
+          break;
+        case 'intelligence':
+          this.build.attributes.intelligence = 215 - this.build.attributes.dexterity - this.build.attributes.strength - this.build.attributes.focus - this.build.attributes.constitution;
+          break;
+        case 'focus':
+          this.build.attributes.focus = 215 - this.build.attributes.dexterity - this.build.attributes.intelligence - this.build.attributes.strength - this.build.attributes.constitution;
+          break;
+        case 'constitution':
+          this.build.attributes.constitution = 215 - this.build.attributes.dexterity - this.build.attributes.intelligence - this.build.attributes.focus - this.build.attributes.strength;
+          break;
+      }
+    }
+  }
 
   ngOnDestroy() {
     this.build$.unsubscribe();
@@ -131,14 +163,23 @@ export class BuildFormComponent implements OnInit {
     this.isSubmitted = true;
 
     let attributes: number[] = [];
-    attributes.push(this.strength);
-    attributes.push(this.dexterity);
-    attributes.push(this.intelligence);
-    attributes.push(this.focus);
-    attributes.push(this.constitution);
+    attributes.push(this.build.attributes.strength);
+    attributes.push(this.build.attributes.dexterity);
+    attributes.push(this.build.attributes.intelligence);
+    attributes.push(this.build.attributes.focus);
+    attributes.push(this.build.attributes.constitution);
+
+    this.buildForm.primaryWeaponName = this.build.primaryWeapon.name;
+    this.buildForm.secondaryWeaponName = this.build.secondaryWeapon.name;
+    this.buildForm.name = this.build.name;
+    this.buildForm.username = this.build.username;
+    this.buildForm.tag = this.build.tag;
+    this.buildForm.selectedAbilitiesWeapon1 = this.selectedAbilities1;
+    this.buildForm.selectedAbilitiesWeapon2 = this.selectedAbilities2;
+    this.buildForm.attributeOptions = attributes;
 
     if(this.isAdd) {
-      this.postBuild$ = this.buildOverviewService.createBuild(this.build).subscribe(result => {
+      this.postBuild$ = this.buildOverviewService.createBuild(this.buildForm).subscribe(result => {
         this.router.navigateByUrl("");
       },
       error => {
@@ -147,7 +188,7 @@ export class BuildFormComponent implements OnInit {
     }
 
     if(this.isEdit) {
-      this.putBuild$ = this.buildOverviewService.putBuild(this.build, this.name).subscribe(result => {
+      this.putBuild$ = this.buildOverviewService.putBuild(this.buildForm, this.name).subscribe(result => {
         this.router.navigateByUrl("");
       },
       error => {

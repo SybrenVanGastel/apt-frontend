@@ -36,12 +36,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let build of (builds$ | async)" (click)="detail(build.name)">
+    <tr *ngFor="let build of (builds$ | async)">
       <td>{{ build.name }}</td>
       <td>{{ build.tag }}</td>
       <td>{{ build.primaryWeaponName }} / {{ build.secondaryWeaponName }}</td>
       <td>{{ build.username }}</td>
       <td>
+        <i class="fas fa-eye" (click)="detail(build.name)"></i>
         <i class="fas fa-pen" (click)='edit(build.name)'></i>
         <i class="fas fa-trash" (click)='delete(build.name)'></i>
       </td>

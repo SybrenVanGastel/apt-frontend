@@ -6,5 +6,5 @@ export interface BuildForm {
   tag: string;
   selectedAbilitiesWeapon1: number[];
   selectedAbilitiesWeapon2: number[];
-  attributes: number[];
+  attributeOptions: number[];
 }

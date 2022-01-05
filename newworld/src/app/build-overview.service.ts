@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Build } from './build';
 import { BuildDetail } from './build-detail';
+import { BuildForm } from './build-form';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,9 @@ export class BuildOverviewService {
     return this.httpClient.get<BuildDetail>(this.baseUrl + "build/" + name);
   }
 
-  getBuildByNameForm(name: string): Observable<Build> {
-    return this.httpClient.get<Build>(this.baseUrl + "build/" + name);
-  }
+  // getBuildByNameForm(name: string): Observable<Build> {
+  //   return this.httpClient.get<BuildForm>(this.baseUrl + "build/" + name);
+  // }
 
   getBuildsByName(name: string): Observable<Build[]> {
     return this.httpClient.get<Build[]>(this.baseUrl + "builds/" + name);
@@ -41,14 +42,14 @@ export class BuildOverviewService {
     return this.httpClient.get<Build[]>(this.baseUrl + "builds/tag/" + tag);
   }
 
-  createBuild(build: Build): Observable<Build> {
+  createBuild(build: BuildForm): Observable<Build> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
 
     return this.httpClient.post<Build>(this.baseUrl + "build", build, {headers: headers});
   }
 
-  putBuild(build: Build, name: string): Observable<Build> {
+  putBuild(build: BuildForm, name: string): Observable<Build> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
 

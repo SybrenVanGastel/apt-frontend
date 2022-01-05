@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Build } from '../build';
 import { BuildOverviewService } from '../build-overview.service';
 
@@ -20,10 +20,16 @@ export class BuildOverviewComponent implements OnInit {
   weapon: string = "";
   tag: string = "";
 
+  deleteBuild$: Subscription = new Subscription();
+
   constructor(private buildOverviewService: BuildOverviewService, private router: Router) { }
 
   ngOnInit(): void {
     this.builds$ = this.buildOverviewService.getBuilds();
+  }
+
+  ngOnDestroy(): void {
+    this.deleteBuild$.unsubscribe();
   }
 
   onSubmit() {
@@ -67,8 +73,10 @@ export class BuildOverviewComponent implements OnInit {
   }
 
   delete(name: string) {
-    this.buildOverviewService.deleteBuild(name).subscribe(result => {
+    this.deleteBuild$ = this.buildOverviewService.deleteBuild(name).subscribe(result => {
       this.builds$ = this.buildOverviewService.getBuilds();
+    },error => {
+      console.log(error);
     });
   }
 
