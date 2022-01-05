@@ -1,5 +1,6 @@
 .detail {
   margin-top: 50px;
+  margin-top: 25px;
   border: 1px solid #363636;
   background-color: #0c0c0e;
   padding: 20px;
@@ -24,6 +25,7 @@
 
 input[type="range"] {
   width: 100% !important;
+  pointer-events: none;
 }
 
 #weapons img {
@@ -37,9 +39,9 @@ img, .overlay {
 }
 
 .overlay {
-  opacity: 0.25;
+  opacity: 0;
 }
 
 input[type="checkbox"]:checked ~ div .overlay {
-  opacity: 0;
+  opacity: 0.25;
 }

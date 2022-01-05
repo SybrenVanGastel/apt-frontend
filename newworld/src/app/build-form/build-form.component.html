@@ -5,86 +5,154 @@
   </button>
 </div>
 
-<form (ngSubmit)="onSubmit()">
-  <label for="primaryWeapon">Select primary weapon</label>
-  <select name="primaryWeapon" id="primaryWeapon" [(ngModel)]="build.primaryWeapon.name" (change)="onChangePrimaryWeapon()">
-    <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
-  </select>
-  <br/>
+<div class="detail">
+  <h1 class="font-weight-bold text-center mb-5">
+    <span *ngIf="!isEdit">Create a build</span>
+    <span *ngIf="isEdit">Edit your build</span>
+  </h1>
 
-  <!-- abilities weapon 1 -->
-  <div>
-    <p>{{ categoryPWName1 }}</p>
-    <div *ngFor="let ability of categoryPWAbilities1">
-      <input type="checkbox" [value]="ability.id" [id]="ability.name" [checked]="ability.isSelected" (change)="selectAbilitiesPW($event, ability.id)"/>
-      <label [for]="ability.name">{{ ability.name }}</label>
+  <form (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <label for="name">Enter a build name</label> <br />
+        <input type="text" name="name" [(ngModel)]="build.name" class="w-100">
+      </div>
+      <div class="col-12 mb-4">
+        <label for="username">Enter your username</label> <br />
+        <input type="text" name="username" [(ngModel)]="build.username" class="w-100">
+      </div>
+      <div class="col-12 mb-4">
+        <label for="tags">Select a tag</label> <br />
+        <select name="tags" id="tags" [(ngModel)]="build.tag" class="w-100">
+          <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
+        </select>
+      </div>
+      <div id="attributes" class="col-12 mb-4">
+        <label for="" class="mb-4">Spend your attribute points</label>
+        <!-- Strength -->
+        <div class="row mb-3">
+          <div class="attributeAmount">
+            <input type="number" min="5" max="300" name="strength" id="strength2"
+              [(ngModel)]="build.attributes.strength" (change)="attributeSlider('strength')">
+          </div>
+          <div class="col">
+            <p class="mb-0 lh-1 font-weight-bold">Strength</p>
+            <input type="range" min="5" max="300" name="strength" id="strength" [(ngModel)]="build.attributes.strength"
+              (change)="attributeSlider('strength')">
+          </div>
+        </div>
+        <!-- Dexterity -->
+        <div class="row mb-3">
+          <div class="attributeAmount">
+            <input type="number" min="5" max="300" name="dexterity" id="dexterity2"
+              [(ngModel)]="build.attributes.dexterity" (change)="attributeSlider('dexterity')">
+          </div>
+          <div class="col">
+            <p class="mb-0 lh-1 font-weight-bold">Dexterity</p>
+            <input type="range" min="5" max="300" name="dexterity" id="dexterity"
+              [(ngModel)]="build.attributes.dexterity" (change)="attributeSlider('dexterity')">
+          </div>
+        </div>
+        <!-- Intelligence -->
+        <div class="row mb-3">
+          <div class="attributeAmount">
+            <input type="number" min="5" max="300" name="intelligence" id="intelligence2"
+              [(ngModel)]="build.attributes.intelligence" (change)="attributeSlider('intelligence')">
+          </div>
+          <div class="col">
+            <p class="mb-0 lh-1 font-weight-bold">Intelligence</p>
+            <input type="range" min="5" max="300" name="intelligence" id="intelligence"
+              [(ngModel)]="build.attributes.intelligence" (change)="attributeSlider('intelligence')">
+          </div>
+        </div>
+        <!-- Focus -->
+        <div class="row mb-3">
+          <div class="attributeAmount">
+            <input type="number" min="5" max="300" name="focus" id="focus2" [(ngModel)]="build.attributes.focus"
+              (change)="attributeSlider('focus')">
+          </div>
+          <div class="col">
+            <p class="mb-0 lh-1 font-weight-bold">Focus</p>
+            <input type="range" min="5" max="300" name="focus" id="focus" [(ngModel)]="build.attributes.focus"
+              (change)="attributeSlider('focus')">
+          </div>
+        </div>
+        <!-- Constitution -->
+        <div class="row mb-3">
+          <div class="attributeAmount">
+            <input type="number" min="5" max="300" name="constitution" id="constitution2"
+              [(ngModel)]="build.attributes.constitution" (change)="attributeSlider('constitution')">
+          </div>
+          <div class="col">
+            <p class="mb-0 lh-1 font-weight-bold">Constitution</p>
+            <input type="range" min="5" max="300" name="constitution" id="constitution"
+              [(ngModel)]="build.attributes.constitution" (change)="attributeSlider('constitution')">
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6 mb-4 weapons">
+        <label for="primaryWeapon">Select primary weapon</label> <br>
+        <select name="primaryWeapon" id="primaryWeapon" [(ngModel)]="build.primaryWeapon.name"
+          (change)="onChangePrimaryWeapon()" class="w-100">
+          <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
+        </select>
+        <!-- abilities weapon 1 -->
+        <h5 class="mt-4">{{ categoryPWName1 }}</h5>
+        <div class="d-flex">
+          <label [for]="ability.id" *ngFor="let ability of categoryPWAbilities1">
+            <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id"
+              [(ngModel)]="ability.isSelected" class="d-none" (change)="selectAbilitiesPW($event, ability.id)">
+            <div class="position-relative">
+              <div class="overlay position-absolute" [ngStyle]="{'background-color': ability.color}"></div>
+              <img class="" [src]="ability.imageUrl" [alt]="ability.name">
+            </div>
+          </label>
+        </div>
+        <h5 class="mt-4">{{ categoryPWName2 }}</h5>
+        <div class="d-flex">
+          <label [for]="ability.id" *ngFor="let ability of categoryPWAbilities2">
+            <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id"
+              [(ngModel)]="ability.isSelected" class="d-none" (change)="selectAbilitiesPW($event, ability.id)">
+            <div class="position-relative">
+              <div class="overlay position-absolute" [ngStyle]="{'background-color': ability.color}"></div>
+              <img class="" [src]="ability.imageUrl" [alt]="ability.name">
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6 mb-4 weapons">
+        <label for="secondaryWeapon">Select secondary weapon</label> <br>
+        <select name="secondaryWeapon" id="secondaryWeapon" [(ngModel)]="build.secondaryWeapon.name"
+          (change)="onChangeSecondaryWeapon()" class="w-100">
+          <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
+        </select>
+        <!-- abilities weapon 2 -->
+        <h5 class="mt-4">{{ categorySWName1 }}</h5>
+        <div class="d-flex">
+          <label [for]="ability.id" *ngFor="let ability of categorySWAbilities1">
+            <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id"
+              [(ngModel)]="ability.isSelected" class="d-none" (change)="selectAbilitiesSW($event, ability.id)">
+            <div class="position-relative">
+              <div class="overlay position-absolute" [ngStyle]="{'background-color': ability.color}"></div>
+              <img class="" [src]="ability.imageUrl" [alt]="ability.name">
+            </div>
+          </label>
+        </div>
+        <h5 class="mt-4">{{ categorySWName2 }}</h5>
+        <div class="d-flex">
+          <label [for]="ability.id" *ngFor="let ability of categorySWAbilities2">
+            <input type="checkbox" [name]="ability.name.replace(' ', '')" [id]="ability.id"
+              [(ngModel)]="ability.isSelected" class="d-none" (change)="selectAbilitiesSW($event, ability.id)">
+            <div class="position-relative">
+              <div class="overlay position-absolute" [ngStyle]="{'background-color': ability.color}"></div>
+              <img class="" [src]="ability.imageUrl" [alt]="ability.name">
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
-    <p>{{ categoryPWName2 }}</p>
-    <div *ngFor="let ability of categoryPWAbilities2">
-      <input type="checkbox" [value]="ability.id" [id]="ability.name" [checked]="ability.isSelected" (change)="selectAbilitiesPW($event, ability.id)" />
-      <label [for]="ability.name">{{ ability.name }}</label>
-    </div>
-  </div>
 
-  <label for="secondaryWeapon">Select secondary weapon</label>
-  <select name="secondaryWeapon" id="secondaryWeapon" [(ngModel)]="build.secondaryWeapon.name" (change)="onChangeSecondaryWeapon()">
-    <option *ngFor="let weapon of (weapons$ | async)" [value]="weapon.name">{{ weapon.name }}</option>
-  </select>
-  <br/>
+    <button type="submit" class="btn btn-primary">Save</button>
 
-  <!-- abilities weapon 2 -->
-  <div>
-    <p>{{ categorySWName1 }}</p>
-    <div *ngFor="let ability of categorySWAbilities1">
-      <input type="checkbox" [value]="ability.id" [id]="ability.name" [checked]="ability.isSelected" (change)="selectAbilitiesSW($event, ability.id)" />
-      <label [for]="ability.name">{{ ability.name }}</label>
-    </div>
-    <p>{{ categorySWName2 }}</p>
-    <div *ngFor="let ability of categorySWAbilities2">
-      <input type="checkbox" [value]="ability.id" [id]="ability.name" [checked]="ability.isSelected" (change)="selectAbilitiesSW($event, ability.id)" />
-      <label [for]="ability.name">{{ ability.name }}</label>
-    </div>
-  </div>
-
-  <label for="name">Enter a build name</label>
-  <input type="text" name="name" [(ngModel)]="build.name">
-  <br/>
-
-  <label for="username">Enter your username</label>
-  <input type="text" name="username" [(ngModel)]="build.username">
-  <br/>
-
-  <label for="tags">Select a tag</label>
-  <select name="tags" id="tags" [(ngModel)]="build.tag">
-    <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
-  </select>
-  <br/>
-
-  <label for="strength">Strength</label>
-  <input type="range" min="5" max="300" name="strength" id="strength" [(ngModel)]="build.attributes.strength" (change)="attributeSlider('strength')">
-  <input type="number" min="5" max="300" name="strength" id="strength2" [(ngModel)]="build.attributes.strength" (change)="attributeSlider('strength')">
-  <br/>
-
-  <label for="dexterity">Dexterity</label>
-  <input type="range" min="5" max="300" name="dexterity" id="dexterity" [(ngModel)]="build.attributes.dexterity" (change)="attributeSlider('dexterity')">
-  <input type="number" min="5" max="300" name="dexterity" id="dexterity2" [(ngModel)]="build.attributes.dexterity" (change)="attributeSlider('dexterity')">
-  <br/>
-
-  <label for="intelligence">Intelligence</label>
-  <input type="range" min="5" max="300" name="intelligence" id="intelligence" [(ngModel)]="build.attributes.intelligence" (change)="attributeSlider('intelligence')">
-  <input type="number" min="5" max="300" name="intelligence" id="intelligence2" [(ngModel)]="build.attributes.intelligence" (change)="attributeSlider('intelligence')">
-  <br/>
-
-  <label for="focus">Focus</label>
-  <input type="range" min="5" max="300" name="focus" id="focus" [(ngModel)]="build.attributes.focus" (change)="attributeSlider('focus')">
-  <input type="number" min="5" max="300" name="focus" id="focus2" [(ngModel)]="build.attributes.focus" (change)="attributeSlider('focus')">
-  <br/>
-
-  <label for="constitution">Constitution</label>
-  <input type="range" min="5" max="300" name="constitution" id="constitution" [(ngModel)]="build.attributes.constitution" (change)="attributeSlider('constitution')">
-  <input type="number" min="5" max="300" name="constitution" id="constitution2" [(ngModel)]="build.attributes.constitution" (change)="attributeSlider('constitution')">
-  <br/>
-
-  <button type="submit">Submit</button>
-
-</form>
+  </form>
+</div>

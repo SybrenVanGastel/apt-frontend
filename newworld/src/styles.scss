@@ -11,6 +11,9 @@ body, html {
   background-color: #151a21;
   color: white;
   font-family: "Montserrat", sans-serif;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  user-select: none;
 }
 
 .bg-black {
@@ -40,4 +43,8 @@ select, input {
 
 option {
   color: #000;
+}
+
+.navbar {
+  z-index: 1000;
 }

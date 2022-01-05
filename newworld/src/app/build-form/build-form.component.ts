@@ -102,7 +102,7 @@ export class BuildFormComponent implements OnInit {
     }
 
     if(this.selectedAbilities2.length == 3) {
-      this.errorMessage = "You already selected 3 abilities for your primary weapon.";
+      this.errorMessage = "You already selected 3 abilities for your secondary weapon.";
 
       if(checkbox.checked) {
         checkbox.checked = false;
