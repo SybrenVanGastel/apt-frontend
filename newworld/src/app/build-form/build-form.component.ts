@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Ability } from '../ability';
 import { Build } from '../build';
@@ -51,10 +51,22 @@ export class BuildFormComponent implements OnInit {
   postBuild$: Subscription = new Subscription;
   putBuild$: Subscription = new Subscription;
 
-  constructor(private buildOverviewService: BuildOverviewService, private weaponService: WeaponService, private router: Router) {
-    this.isAdd = this.router.getCurrentNavigation()?.extras.state?.mode === 'add';
-    this.isEdit = this.router.getCurrentNavigation()?.extras.state?.mode === 'edit';
+  constructor(private buildOverviewService: BuildOverviewService, private weaponService: WeaponService, private router: Router, private route: ActivatedRoute) {
+    //this.isAdd = this.router.getCurrentNavigation()?.extras.state?.mode === 'add';
+    //this.isEdit = this.router.getCurrentNavigation()?.extras.state?.mode === 'edit';
     this.name = this.router.getCurrentNavigation()?.extras.state?.name;
+    const type = this.route.snapshot.paramMap.get('type');
+
+    if(type == "add") {
+      this.isAdd = true;
+      this.isEdit = false;
+    } else if(type == "edit") {
+      this.isAdd = false;
+      this.isEdit = true;
+    } else {
+      this.isAdd = false;
+      this.isEdit = false;
+    }
 
     if(this.name != null) {
       this.build$ = this.buildOverviewService.getBuildByName(this.name).subscribe(result => {
