@@ -20,6 +20,7 @@ export class BuildFormComponent implements OnInit {
   isEdit: boolean = false;
   isSubmitted: boolean = false;
   errorMessage: string = "";
+  errorIsShown: boolean = false;
 
   tags: string[]= ["PVE","PVP","GENERAL","WAR"];
   name: string = "";
@@ -58,9 +59,7 @@ export class BuildFormComponent implements OnInit {
     if(this.name != null) {
       this.build$ = this.buildOverviewService.getBuildByName(this.name).subscribe(result => {
         this.build = result;
-
-        this.primaryWeaponObject = this.build.primaryWeapon;
-        this.secondaryWeaponObject = this.build.secondaryWeapon;
+        this.fillHelpers(this.build);
         this.seperateCategories();
       });
     }
@@ -68,6 +67,24 @@ export class BuildFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.weapons$ = this.weaponService.getWeapons();
+  }
+
+  fillHelpers(build: BuildDetail) {
+    this.primaryWeaponObject = build.primaryWeapon;
+    this.selectedAbilities1 = [];
+    for(let ability of this.primaryWeaponObject.abilities) {
+      if(ability.isSelected) {
+        this.selectedAbilities1.push(ability.id);
+      }
+    }
+
+    this.secondaryWeaponObject = build.secondaryWeapon;
+    this.selectedAbilities2 = [];
+    for(let ability of this.secondaryWeaponObject.abilities) {
+      if(ability.isSelected) {
+        this.selectedAbilities2.push(ability.id);
+      }
+    }
   }
 
   selectAbilitiesPW(event: any, id: number) {
@@ -81,6 +98,7 @@ export class BuildFormComponent implements OnInit {
 
     if(this.selectedAbilities1.length == 3) {
       this.errorMessage = "You already selected 3 abilities for your primary weapon.";
+      this.errorIsShown = true;
 
       if(checkbox.checked) {
         checkbox.checked = false;
@@ -103,6 +121,7 @@ export class BuildFormComponent implements OnInit {
 
     if(this.selectedAbilities2.length == 3) {
       this.errorMessage = "You already selected 3 abilities for your secondary weapon.";
+      this.errorIsShown = true;
 
       if(checkbox.checked) {
         checkbox.checked = false;
@@ -117,6 +136,7 @@ export class BuildFormComponent implements OnInit {
   onChangePrimaryWeapon() {
     this.weaponService.getWeaponByName(this.build.primaryWeapon.name).subscribe(result => {
       this.primaryWeaponObject = result;
+      this.selectedAbilities1 = [];
       this.seperateCategories();
     });
   }
@@ -124,6 +144,7 @@ export class BuildFormComponent implements OnInit {
   onChangeSecondaryWeapon() {
     this.weaponService.getWeaponByName(this.build.secondaryWeapon.name).subscribe(result => {
       this.secondaryWeaponObject = result;
+      this.selectedAbilities2 = [];
       this.seperateCategories();
     });
   }
@@ -133,6 +154,7 @@ export class BuildFormComponent implements OnInit {
 
     if(!(this.attributePointsTotal < 215)) {
       this.errorMessage = "You can only spend 190 attribute points.";
+      this.errorIsShown = true;
       switch(type) {
         case 'strength':
           this.build.attributes.strength = 215 - this.build.attributes.dexterity - this.build.attributes.intelligence - this.build.attributes.focus - this.build.attributes.constitution;
@@ -184,6 +206,7 @@ export class BuildFormComponent implements OnInit {
       },
       error => {
         this.errorMessage = error.message;
+        this.errorIsShown = true;
       });
     }
 
@@ -193,6 +216,7 @@ export class BuildFormComponent implements OnInit {
       },
       error => {
         this.errorMessage = error.message;
+        this.errorIsShown = true;
       });
     }
   }
@@ -238,6 +262,10 @@ export class BuildFormComponent implements OnInit {
         this.categorySWAbilities2.push(ability);
       }
     }
+  }
+
+  dismissError() {
+    this.errorIsShown = false;
   }
 
 }
