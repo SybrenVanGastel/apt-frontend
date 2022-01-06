@@ -36,14 +36,17 @@
   </thead>
   <tbody>
     <tr *ngFor="let build of (builds$ | async)">
-      <td>{{ build.name }}</td>
-      <td>{{ build.tag }}</td>
-      <td>{{ build.primaryWeaponName }} / {{ build.secondaryWeaponName }}</td>
-      <td>{{ build.username }}</td>
+      <td [class]="build.name">{{ build.name }}</td>
+      <td [class]="build.tag">{{ build.tag }}</td>
+      <td [ngClass]="build.primaryWeaponName + build.secondaryWeaponName">{{ build.primaryWeaponName }} /
+        {{ build.secondaryWeaponName }}</td>
+      <td [class]="build.username">{{ build.username }}</td>
       <td style="width: 150px !important;">
-          <button class="btn-sm btn-primary border-0 mr-2" (click)="detail(build.name)"><i class="fas fa-eye"></i></button>
-          <button class="btn-sm btn-success border-0 mr-2" (click)='edit(build.name)'><i class="fas fa-pen"></i></button>
-          <button class="btn-sm btn-danger border-0 mr-2" (click)='delete(build.name)'><i class="fas fa-trash"></i></button>
+        <button class="btn-sm btn-primary border-0 mr-2" (click)="detail(build.name)"><i
+            class="fas fa-eye"></i></button>
+        <button class="btn-sm btn-success border-0 mr-2" (click)='edit(build.name)'><i class="fas fa-pen"></i></button>
+        <button class="btn-sm btn-danger border-0 mr-2" (click)='delete(build.name)'><i
+            class="fas fa-trash"></i></button>
       </td>
     </tr>
   </tbody>
