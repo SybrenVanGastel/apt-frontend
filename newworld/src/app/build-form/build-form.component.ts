@@ -221,7 +221,7 @@ export class BuildFormComponent implements OnInit {
         console.log('post');
       },
       error => {
-        this.errorMessage = error.message;
+        this.errorMessage = "You cannot save this build. You need to fill in all the fields and your name needs to be unique.";
         this.errorIsShown = true;
       });
     }
@@ -231,7 +231,7 @@ export class BuildFormComponent implements OnInit {
         this.router.navigateByUrl("");
       },
       error => {
-        this.errorMessage = error.message;
+        this.errorMessage = "You cannot save this build. You need to fill in all the fields and your name needs to be unique.";
         this.errorIsShown = true;
       });
     }
