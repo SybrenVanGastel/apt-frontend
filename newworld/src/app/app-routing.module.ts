@@ -7,7 +7,7 @@ import { BuildOverviewComponent } from './build-overview/build-overview.componen
 const routes: Routes = [
   { path: '', component: BuildOverviewComponent },
   { path: 'build/:name', component: BuildDetailComponent },
-  { path: 'builds/form/:type', component: BuildFormComponent },
+  { path: 'builds/form/:type/:name', component: BuildFormComponent },
 ];
 
 @NgModule({

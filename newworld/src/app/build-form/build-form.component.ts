@@ -54,7 +54,8 @@ export class BuildFormComponent implements OnInit {
   constructor(private buildOverviewService: BuildOverviewService, private weaponService: WeaponService, private router: Router, private route: ActivatedRoute) {
     //this.isAdd = this.router.getCurrentNavigation()?.extras.state?.mode === 'add';
     //this.isEdit = this.router.getCurrentNavigation()?.extras.state?.mode === 'edit';
-    this.name = this.router.getCurrentNavigation()?.extras.state?.name;
+    //this.name = this.router.getCurrentNavigation()?.extras.state?.name;
+    const name = this.route.snapshot.paramMap.get('name');
     const type = this.route.snapshot.paramMap.get('type');
 
     if(type == "add") {
@@ -68,8 +69,8 @@ export class BuildFormComponent implements OnInit {
       this.isEdit = false;
     }
 
-    if(this.name != null) {
-      this.build$ = this.buildOverviewService.getBuildByName(this.name).subscribe(result => {
+    if(name != null) {
+      this.build$ = this.buildOverviewService.getBuildByName(name).subscribe(result => {
         this.build = result;
         this.fillHelpers(this.build);
         this.seperateCategories();
