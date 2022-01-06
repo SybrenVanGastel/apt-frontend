@@ -64,7 +64,7 @@ export class BuildOverviewComponent implements OnInit {
 
   edit(name: string) {
     //Navigate to form in edit mode
-    this.router.navigate(['builds/form'], {state: {mode: 'edit', name: name}});
+    this.router.navigate(['builds/form/edit/' + name], {state: {mode: 'edit', name: name}});
   }
 
   delete(name: string) {
