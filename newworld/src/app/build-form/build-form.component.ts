@@ -195,6 +195,7 @@ export class BuildFormComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('arrived');
     this.isSubmitted = true;
 
     let attributes: number[] = [];
@@ -214,8 +215,10 @@ export class BuildFormComponent implements OnInit {
     this.buildForm.attributeOptions = attributes;
 
     if(this.isAdd) {
+      console.log('add');
       this.postBuild$ = this.buildOverviewService.createBuild(this.buildForm).subscribe(result => {
         this.router.navigateByUrl("");
+        console.log('post');
       },
       error => {
         this.errorMessage = error.message;
@@ -232,6 +235,7 @@ export class BuildFormComponent implements OnInit {
         this.errorIsShown = true;
       });
     }
+    console.log('end');
   }
 
   seperateCategories() {
