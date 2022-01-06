@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
 
   add() {
     //Navigate to form in add mode
-    this.router.navigate(['builds/form'], {state: {mode: 'add'}});
+    this.router.navigate(['builds/form/add'], {state: {mode: 'add'}});
   }
 
 }

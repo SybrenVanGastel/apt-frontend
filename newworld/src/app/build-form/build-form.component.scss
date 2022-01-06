@@ -34,9 +34,8 @@ input[type="number"] {
 
 input[type="range"] {
   width: 100% !important;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: textfield;
+  border: none !important;
+  padding: 0 !important;
 }
 
 .weapons img {
@@ -55,4 +54,10 @@ img, .overlay {
 
 input[type="checkbox"]:checked ~ div .overlay {
   opacity: 0.25;
+}
+
+.alert-danger {
+  bottom: 15px;
+  left: 15px;
+  z-index: 1000;
 }
