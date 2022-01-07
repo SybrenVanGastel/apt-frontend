@@ -55,13 +55,14 @@ export class BuildFormComponent implements OnInit {
     //this.isAdd = this.router.getCurrentNavigation()?.extras.state?.mode === 'add';
     //this.isEdit = this.router.getCurrentNavigation()?.extras.state?.mode === 'edit';
     //this.name = this.router.getCurrentNavigation()?.extras.state?.name;
-    const name = this.route.snapshot.paramMap.get('name');
     const type = this.route.snapshot.paramMap.get('type');
+    let name: string = "";
 
     if(type == "add") {
       this.isAdd = true;
       this.isEdit = false;
     } else if(type == "edit") {
+      name = this.route.snapshot.paramMap.get('name')!.toString();
       this.isAdd = false;
       this.isEdit = true;
     } else {
@@ -69,7 +70,7 @@ export class BuildFormComponent implements OnInit {
       this.isEdit = false;
     }
 
-    if(name != null) {
+    if(name != "") {
       this.build$ = this.buildOverviewService.getBuildByName(name).subscribe(result => {
         this.build = result;
         this.fillHelpers(this.build);
