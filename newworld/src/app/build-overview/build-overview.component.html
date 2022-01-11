@@ -45,7 +45,7 @@
         <button class="btn-sm btn-primary border-0 mr-2" (click)="detail(build.name)"><i
             class="fas fa-eye"></i></button>
         <button class="btn-sm btn-success border-0 mr-2" (click)='edit(build.name)'><i class="fas fa-pen"></i></button>
-        <button class="btn-sm btn-danger border-0 mr-2" (click)='delete(build.name)'><i
+        <button [class]="'btn-sm btn-danger border-0 mr-2 delete' + build.name" (click)='delete(build.name)'><i
             class="fas fa-trash"></i></button>
       </td>
     </tr>
